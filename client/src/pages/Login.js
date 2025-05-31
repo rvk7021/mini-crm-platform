@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -12,7 +12,7 @@ export default function Login() {
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
+    const [loginLoading, setLoginLoading] = useState(false);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -20,8 +20,25 @@ export default function Login() {
             [name]: value
         }));
     };
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 2000);
 
-    const handleSubmit = (e) => {
+            return () => clearTimeout(timer);
+        }
+        if (success) {
+            const timer = setTimeout(() => {
+                setSuccess(null);
+            }, 2000);
+
+            return () => clearTimeout(timer);
+        }
+
+    }, [error, success]);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
@@ -30,17 +47,38 @@ export default function Login() {
             return;
         }
 
-        setLoading(true);
-        // Simulate sign-in API call
-        setTimeout(() => {
-            setLoading(false);
-            setSuccess("Sign-in successful! Welcome back.");
-            setFormData({
-                email: "",
-                password: ""
+        setLoginLoading(true);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include", 
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password
+                })
             });
-        }, 1500);
+
+            const data = await response.json(); 
+
+            if (data.success) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                setLoginLoading(false);
+                navigate('/')
+            } else {
+                setLoginLoading(false);
+                setError(data.message || "Login failed. Please try again.");
+            }
+
+        } catch (error) {
+            setLoginLoading(false);
+            setError("An error occurred while logging in. Please try again.");
+            console.error("Login error:", error);
+        }
     };
+
 
     const handleGoogleAuth = () => {
         setLoading(true);
@@ -171,7 +209,7 @@ export default function Login() {
                             disabled={loading}
                             className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:transform-none shadow-xl shadow-blue-500/30 text-sm sm:text-base"
                         >
-                            {loading ? (
+                            {loginLoading ? (
                                 <div className="flex items-center justify-center gap-2">
                                     <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                     <span className="hidden sm:inline">Signing In...</span>

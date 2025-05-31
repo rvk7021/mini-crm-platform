@@ -30,7 +30,14 @@ export default function Signup() {
 
       return () => clearTimeout(timer);
     }
-  }, [error]);
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess(null);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error,success]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,7 +78,7 @@ export default function Signup() {
           confirmPassword: ""
         });
         setTimeout(() => {
-          navigate('/login');
+          navigate('/');
         }, 2000);
       }
       else {
