@@ -64,9 +64,10 @@ export default function Login() {
             const data = await response.json(); 
 
             if (data.success) {
-                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("authToken",data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
                 setLoginLoading(false);
-                navigate('/')
+                navigate('/home'); 
             } else {
                 setLoginLoading(false);
                 setError(data.message || "Login failed. Please try again.");

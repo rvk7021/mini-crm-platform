@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import GoogleOAuth from "../auth/GoogleLogin";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 export default function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -22,6 +25,13 @@ export default function Signup() {
     }));
   };
 
+  const GoogleAuthWrapper =()=>{
+    return (
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <GoogleOAuth />
+      </GoogleOAuthProvider>
+    );
+  }
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -78,10 +88,11 @@ export default function Signup() {
           confirmPassword: ""
         });
         setTimeout(() => {
-          navigate('/');
+          navigate('/login');
         }, 2000);
       }
       else {
+        setSignupLoading(false);
         setError(data.message || "Signup failed. Please try again.");
       }
     } catch (error) {
@@ -127,6 +138,9 @@ export default function Signup() {
         {/* Main Card */}
         <div className="bg-white/90 backdrop-blur-sm border border-white/50 rounded-2xl sm:rounded-3xl shadow-2xl shadow-blue-500/10 p-6 sm:p-8">
           {/* Google Sign Up Button */}
+          <GoogleAuthWrapper />
+
+          {/* Google Sign Up Button */} 
           <button
             onClick={handleGoogleAuth}
             disabled={loading}
