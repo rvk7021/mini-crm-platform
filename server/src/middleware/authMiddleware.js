@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import jwt from 'jsonwebtoken'
 export const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
-    console.log(token)
+    // console.log(token)
     if (!token) {
         return res.status(401).json({
             success: false,

@@ -1,6 +1,6 @@
-// src/controllers/userController.js
 import Customer from '../models/Customer.js';
 
+// create a new customer api
 export const addUser = async (req, res) => {
   try {
     const {
@@ -70,5 +70,71 @@ export const addUser = async (req, res) => {
   } catch (err) {
     console.error("addUser error:", err.message);
     res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+// Get all customers
+export const getAllCustomers = async (req,res)  =>{
+  try {
+
+    const customers = await Customer.find({});
+    if (!customers || customers.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No customers found.",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Customers fetched successfully.",
+      data: customers,
+    });
+  }
+  catch (error) {
+
+    console.error("getAllCustomers error:", error.message);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error" 
+    });
+    
+  }
+}
+
+// delete an customer 
+
+export const deleteCustomer = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "No user ID provided"
+      });
+    }
+
+    const deletedUser = await Customer.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Customer deleted successfully",
+      data: deletedUser
+    });
+
+  } catch (error) {
+    console.error("Failed to delete customer:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
