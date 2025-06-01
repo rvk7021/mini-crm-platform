@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import connectDB from './utils/db.js';
 import authRoutes from './routes/authRoutes.js'
-
+import customerRoutes from './routes/customerRoutes.js'
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth",authRoutes);
+app.use("/api",customerRoutes);
 app.get('/', (req, res) => {
     res.send('Hello from the server!');
     }

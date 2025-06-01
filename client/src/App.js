@@ -3,6 +3,10 @@ import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound";
+import Layout from "./components/Layout";
+import CustomerPage from "./pages/Customer";
+import SegmentPage from "./pages/Segment";
+import CampaignPage from "./pages/Campaigns";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -27,8 +31,8 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
-function App() {
 
+function App() {
   return (
     <div className="App bg-red-500">
       <Router>
@@ -43,13 +47,20 @@ function App() {
               <Login />
             </PublicRoute>
           } />
-          <Route path="/home" element={
+          <Route path="/" element={
             <ProtectedRoute>
-              <Dashboard />
+              <Layout />
             </ProtectedRoute>
-          } />
+
+          }>
+            <Route path="home" element={<Dashboard />} />
+            <Route path="customers" element={<CustomerPage />} />
+            <Route path="segments" element={<SegmentPage />} />
+            <Route path="campaigns" element={<CampaignPage />} />
+            <Route path="create-campaign" element={<CampaignPage />} />
+          </Route>
           <Route path='/*' element={
-            <PageNotFound/>
+            <PageNotFound />
           } />
         </Routes>
       </Router>
