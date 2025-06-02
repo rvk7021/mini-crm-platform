@@ -14,7 +14,7 @@ export default function Layout() {
         console.log("Closing sidebar"); // Debug log
         setIsSidebarOpen(false);
     };
-    
+
     return (
         <div className="flex h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
             {/* Desktop sidebar - always visible on large screens */}

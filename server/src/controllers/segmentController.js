@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import Customer from "../models/Customer.js";
-
+import Segment from "../models/Segment.js";
 dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -134,7 +134,7 @@ function validateFilter(filter, path = []) {
 // Sanitizer for AI response (removes markdown/code blocks)
 function sanitizeAIResponse(responseText) {
     return responseText
-        .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+        .replace(/```[\s\S]*?```/g, '')
         .replace(/```/g, '')
         .replace(/^json\s*/i, '')
         .trim();
@@ -210,7 +210,8 @@ export const promptSegment = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            filter: filterQuery,
+            rule: filterQuery,
+            prompt,
             count: customers.length,
             data: customers
         });
@@ -225,6 +226,191 @@ export const promptSegment = async (req, res) => {
     }
 };
 
-export const saveSegment = async (req,res) => {
-    const 
+// save segment api call 
+export const saveSegment = async (req, res) => {
+    let description = req.body.description || "";
+    const rule = req.body.rule || {};
+    const name = req.body.name || "";
+    const customers = req.body.customers || [];
+    const createdBy = req.user?.id || "";
+
+    console.log(description, rule, name, customers, createdBy);
+    if (!name || !rule || !Array.isArray(customers) || customers.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Name, rule, and customers are required."
+        });
+    }
+
+    const systemPrompt = `
+You are a professional description generator for customer segments.
+Your job is to write a clear, concise, and human-friendly description of a customer segment, given its MongoDB filter rule.
+
+Guidelines:
+- Summarize the segment in 2-3 sentences.
+- Use natural language, not code or technical jargon.
+- Do not refer to the filter or rule as "JSON" or "object".
+- Clearly state the criteria that define the segment.
+- Do not include any explanations, only the description.
+
+Examples:
+
+Rule: { "totalSpent": { "$gt": 500 } }
+Description: Customers who have spent more than $500.
+
+Rule: { "email": { "$regex": "@gmail\\\\.com$", "$options": "i" }, "orders": { "$size": 3 } }
+Description: Gmail users who have placed exactly 3 orders.
+
+Rule: { "$expr": { "$gt": [ { "$size": "$orders" }, 0 ] } }
+Description: Customers who have placed at least one order.
+
+Rule: { "preferredCategory": "Electronics", "totalSpent": { "$gte": 1000 } }
+Description: Customers interested in Electronics who have spent $1,000 or more.
+
+Rule: { "lastOrder": { "$gte": "2025-01-01", "$lt": "2026-01-01" } }
+Description: Customers whose last order was placed in 2025.
+
+ONLY return the description, nothing else.
+`;
+
+    if (!description) {
+        const prompt = ` ${systemPrompt}
+                         Rule: ${JSON.stringify(rule)}
+                        Description:
+                        `;
+        const generateDescription = await ai.models.generateContent({
+            model: "gemini-2.5-flash-preview-05-20",
+            contents: [
+                {
+                    role: "user",
+                    parts: [
+                        { text: prompt }
+                    ]
+                }
+            ],
+            generationConfig: {
+                temperature: 0.1,
+                maxOutputTokens: 128
+            }
+        });
+        description = generateDescription?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+    }
+
+    try {
+        const newSegment = new Segment({
+            name,
+            description: description || "",
+            rule,
+            customers,
+            createdBy: createdBy || null
+        });
+        const savedSegment = await newSegment.save();
+        return res.status(201).json({
+            success: true,
+            message: "Segment saved successfully",
+            data: savedSegment
+        });
+
+    } catch (error) {
+
+        console.error("Error saving segment:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to save segment",
+            error: error.message
+        });
+
+    }
 }
+
+export const getAllSegments = async (req, res) => {
+    try {
+        const segments = await Segment.find({})
+            .populate('createdBy', 'username')
+            .populate('customers')
+            .sort({ createdAt: -1 })
+            .lean();
+
+        if (!segments || segments.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No segments found."
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Segments fetched successfully.",
+            data: segments
+        });
+
+    } catch (error) {
+        console.error("Error fetching segments:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch segments",
+            error: error.message
+        });
+    }
+};
+
+
+export const deleteSegment = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({
+            success: false,
+            message: "Segment ID is required"
+        });
+    }
+    console.log("Deleting segment with ID:", id);
+    try {
+        const deletedSegment = await Segment.findByIdAndDelete(id).populate('createdBy', 'username')
+            .populate('customers')
+            .sort({ createdAt: -1 })
+            .lean();;
+        if (!deletedSegment) {
+            return res.status(404).json({
+                success: false,
+                message: "Segment not found"
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: "Segment deleted successfully"
+        });
+    } catch (error) {
+        console.error("Error deleting segment:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to delete segment", error: error.message
+        });
+    }
+};
+
+// get api by id 
+
+export const getSingleSegment = async (req, res) => {
+    const { segmentId } = req.params;
+
+    // Check if segmentId is provided
+    if (!segmentId) {
+        return res.status(400).json({ success: false, error: 'Segment ID is required' });
+    }
+
+    try {
+        // Find the segment by ID
+        const segment = await Segment.findById(segmentId);
+
+        if (!segment) {
+            return res.status(404).json({ success: false, error: 'Segment not found' });
+        }
+
+        // Return the segment
+        res.status(200).json({ success: true, segment });
+    } catch (error) {
+        console.error('Error fetching segment:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
