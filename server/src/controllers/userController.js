@@ -75,7 +75,7 @@ export const addUser = async (req, res) => {
 
 
 // Get all customers
-export const getAllCustomers = async (req,res)  =>{
+export const getAllCustomers = async (req, res) => {
   try {
 
     const customers = await Customer.find({});
@@ -94,16 +94,15 @@ export const getAllCustomers = async (req,res)  =>{
   catch (error) {
 
     console.error("getAllCustomers error:", error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
-    
+
   }
 }
 
 // delete an customer 
-
 export const deleteCustomer = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -136,5 +135,48 @@ export const deleteCustomer = async (req, res) => {
       success: false,
       message: "Server error"
     });
+  }
+};
+
+// Add orders to existing customer
+export const addOrderToCustomer = async (req, res) => {
+  try {
+    const { identifierType, identifier, amount, items, channel } = req.body;
+
+    if (!identifierType || !identifier || !amount || !items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    // Build dynamic query (e.g., { email: identifier } or { phone: identifier })
+    const query = { [identifierType]: identifier };
+    const customer = await Customer.findOne(query);
+
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    // Create new order object
+    const newOrder = {
+      amount,
+      items,
+      channel,
+      date: new Date()
+    };
+
+    // Push new order
+    customer.orders.push(newOrder);
+    customer.totalSpent += amount;
+    customer.lastOrder = new Date();
+
+    await customer.save();
+
+    res.status(201).json({
+      message: 'Order added to customer successfully',
+      orderCount: customer.orders.length
+    });
+
+  } catch (err) {
+    console.error('Add Order Error:', err);
+    res.status(500).json({ message: 'Server error while adding order' });
   }
 };

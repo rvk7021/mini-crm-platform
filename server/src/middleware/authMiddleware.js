@@ -21,7 +21,7 @@ export const verifyToken = async (req, res, next) => {
                 message: 'Not Authorized',
             });
         }
-        req.user = user; 
+        req.user = user;
         next();
     } catch (error) {
         console.error('JWT Error:', error.message);

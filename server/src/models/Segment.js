@@ -12,7 +12,7 @@ const SegmentSchema = new mongoose.Schema({
   },
 
   rule: {
-    type: Object, 
+    type: Object,
     required: true
   },
 
@@ -24,7 +24,7 @@ const SegmentSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: false 
+    required: false
   },
 
   createdAt: {

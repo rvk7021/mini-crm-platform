@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
 
   googleId: {
-    type: String, 
+    type: String,
   },
 
   provider: {
