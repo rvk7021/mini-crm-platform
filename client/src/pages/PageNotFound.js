@@ -10,7 +10,7 @@ export const PageNotFound = () => {
                 The page you are looking for doesn’t exist or has been moved.
             </p>
             <Link
-                to="/home"
+                to="/"
                 className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
                 Go to Home

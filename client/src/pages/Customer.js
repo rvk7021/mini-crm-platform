@@ -110,6 +110,25 @@ export default function CustomerPage() {
     if (!window.confirm("Are you sure you want to delete this customer?")) return;
 
     try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        throw new Error('You must be logged in to delete customers.');
+      }
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/customer/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to delete customer');
+      }
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to delete customer');
+      }
       setCustomers(customers.filter(c => c._id !== id));
       if (selectedCustomer && selectedCustomer._id === id) setSelectedCustomer(null);
     } catch (err) {

@@ -326,6 +326,7 @@ export default function SegmentPage() {
 
         if (!response.ok) {
           console.error('Failed to fetch segments');
+          setSegments([]);
           return;
         }
 

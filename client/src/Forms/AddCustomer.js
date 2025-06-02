@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from 'react';
 
 export default function AddCustomer() {
@@ -96,7 +95,7 @@ export default function AddCustomer() {
         setNotification({ show: false, type: '', message: '' });
 
         try {
-            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/list`, {
+            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/customer/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

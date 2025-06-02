@@ -26,7 +26,7 @@ export default function Sidebar({ onClose }) {
             <nav className="flex flex-col p-4 space-y-1">
                 {/* dashboard */}
                 <NavLink
-                    to="/home"
+                    to="/"
                     className={({ isActive }) =>
                         `group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${isActive
                             ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25 transform scale-[0.98]"
@@ -104,6 +104,22 @@ export default function Sidebar({ onClose }) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                     Add New Campaign
+                </NavLink>
+                {/* add order */}
+                <NavLink
+                    to="/create-order"
+                    className={({ isActive }) =>
+                        `group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${isActive
+                            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25 transform scale-[0.98]"
+                            : "text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 hover:shadow-md hover:shadow-blue-100/50 hover:transform hover:scale-[1.02] active:scale-[0.98]"
+                        }`
+                    }
+                    onClick={handleNavClick}
+                >
+                    <svg className="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Order
                 </NavLink>
             </nav>
 
