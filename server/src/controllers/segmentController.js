@@ -297,19 +297,31 @@ ONLY return the description, nothing else.
     }
 
     try {
+        const existingSegment = await Segment.findOne({ name: name.trim() });
+
+        if (existingSegment) {
+            return res.status(400).json({
+                success: false,
+                message: "A segment with the same name already exists",
+            });
+        }
+
         const newSegment = new Segment({
-            name,
+            name: name.trim(),
             description: description || "",
             rule,
             customers,
-            createdBy: createdBy || null
+            createdBy: createdBy || null,
         });
+
         const savedSegment = await newSegment.save();
+
         return res.status(201).json({
             success: true,
             message: "Segment saved successfully",
-            data: savedSegment
+            data: savedSegment,
         });
+
 
     } catch (error) {
 
