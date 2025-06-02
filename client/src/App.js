@@ -8,6 +8,7 @@ import CustomerPage from "./pages/Customer";
 import SegmentPage from "./pages/Segment";
 import CampaignPage from "./pages/Campaigns";
 import OrderPage from "./pages/Order";
+import CreateCampaign from "./components/CreateCampaign";
 
 const ProtectedRoute = ({ children }) => {
   const authToken = localStorage.getItem('authToken');
@@ -57,7 +58,7 @@ function App() {
             <Route path="customers" element={<CustomerPage />} />
             <Route path="segments" element={<SegmentPage />} />
             <Route path="campaigns" element={<CampaignPage />} />
-            <Route path="create-campaign" element={<CampaignPage />} />
+            <Route path="create-campaign" element={<CreateCampaign />} />
             <Route path="create-order" element={<OrderPage />} />
 
           </Route>
