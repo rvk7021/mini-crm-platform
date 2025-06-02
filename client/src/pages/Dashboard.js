@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { 
-   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+import {
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area,
   ScatterChart, Scatter
 } from "recharts";
-import { 
+import {
   Users, DollarSign, ShoppingCart, TrendingUp, RefreshCw
 } from "lucide-react";
 
@@ -31,7 +31,7 @@ export default function Dashboard() {
             Authorization: `Bearer ${token}`,
           },
         });
-        
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Failed to fetch customers');
@@ -64,7 +64,7 @@ export default function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to fetch customers');
@@ -85,8 +85,8 @@ export default function Dashboard() {
   const analytics = {
     totalCustomers: customers.length,
     totalRevenue: customers.reduce((sum, customer) => sum + customer.totalSpent, 0),
-    averageOrderValue: customers.length > 0 
-      ? customers.reduce((sum, customer) => sum + customer.totalSpent, 0) / customers.length 
+    averageOrderValue: customers.length > 0
+      ? customers.reduce((sum, customer) => sum + customer.totalSpent, 0) / customers.length
       : 0,
     activeCustomers: customers.filter(customer => customer.orders.length > 0).length
   };
@@ -168,8 +168,8 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center text-red-600">
           <p className="text-xl mb-4">Error: {error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
           >
             Try Again
@@ -322,7 +322,7 @@ export default function Dashboard() {
               <CartesianGrid />
               <XAxis dataKey="orderCount" name="Order Count" />
               <YAxis dataKey="totalSpent" name="Total Spent" />
-              <Tooltip 
+              <Tooltip
                 cursor={{ strokeDasharray: '3 3' }}
                 formatter={(value, name) => [
                   name === 'totalSpent' ? `$${value}` : value,
@@ -343,7 +343,7 @@ export default function Dashboard() {
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">New Customers</span>
                 <span className="text-sm font-semibold text-blue-600">
-                  {customers.filter(c => new Date(c.createdAt) > new Date(Date.now() - 30*24*60*60*1000)).length}
+                  {customers.filter(c => new Date(c.createdAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -465,7 +465,7 @@ export default function Dashboard() {
                 });
               });
               return acc;
-            }, {})).sort(([,a], [,b]) => b - a).slice(0, 10).map(([item, count]) => ({ item, count }))}>
+            }, {})).sort(([, a], [, b]) => b - a).slice(0, 10).map(([item, count]) => ({ item, count }))}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="item" />
               <YAxis />
@@ -485,11 +485,10 @@ export default function Dashboard() {
               .map((customer, index) => (
                 <div key={customer._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                   <div className="flex items-center space-x-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                      index === 0 ? 'bg-yellow-500' : 
-                      index === 1 ? 'bg-gray-400' : 
-                      index === 2 ? 'bg-orange-600' : 'bg-blue-500'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${index === 0 ? 'bg-yellow-500' :
+                      index === 1 ? 'bg-gray-400' :
+                        index === 2 ? 'bg-orange-600' : 'bg-blue-500'
+                      }`}>
                       #{index + 1}
                     </div>
                     <div>

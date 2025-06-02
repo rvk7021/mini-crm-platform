@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddCustomer from "../Forms/AddCustomer";
-import {AddOrder} from "../Forms/AddOrder";
+import { AddOrder } from "../Forms/AddOrder";
 import { toast } from "react-hot-toast";
 
 export default function OrderPage() {
@@ -13,21 +13,21 @@ export default function OrderPage() {
 
   const handleModeChange = (type) => {
     setMode(type);
-    setRefreshKey((prev) => prev + 1); // Reset child forms
-    setIsCustomerAdded(false); // Reset customer state when switching modes
+    setRefreshKey((prev) => prev + 1);
+    setIsCustomerAdded(false);
   };
 
   const handleCloseForm = () => {
     setMode(null);
     setIsCustomerAdded(false);
-    setRefreshKey((prev) => prev + 1); // Reset forms
+    setRefreshKey((prev) => prev + 1);
   };
 
   const handleCloseOrderForm = () => {
     if (mode === "new") {
-      setIsCustomerAdded(false); // Go back to customer form for new customer mode
+      setIsCustomerAdded(false);
     } else {
-      setMode(null); // Go back to initial state for existing customer mode
+      setMode(null);
     }
     setRefreshKey((prev) => prev + 1); // Reset forms
   };
@@ -61,8 +61,8 @@ export default function OrderPage() {
           <button
             onClick={() => handleModeChange("new")}
             className={`px-6 py-2 text-sm rounded-md border transition-all ${mode === "new"
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
+              ? "bg-blue-600 text-white border-blue-600"
+              : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
               }`}
           >
             New Customer
@@ -70,8 +70,8 @@ export default function OrderPage() {
           <button
             onClick={() => handleModeChange("existing")}
             className={`px-6 py-2 text-sm rounded-md border transition-all ${mode === "existing"
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
+              ? "bg-blue-600 text-white border-blue-600"
+              : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
               }`}
           >
             Existing Customer

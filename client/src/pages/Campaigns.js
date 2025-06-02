@@ -45,19 +45,19 @@ export default function CampaignPage() {
     return acc;
   }, { totalCampaigns: 0, totalAudience: 0, totalSent: 0, totalFailed: 0 });
 
-  const successRate = analytics.totalSent > 0 
+  const successRate = analytics.totalSent > 0
     ? ((analytics.totalSent - analytics.totalFailed) / analytics.totalSent * 100).toFixed(1)
     : 0;
 
   // Filter campaigns
   const filteredCampaigns = campaigns.filter(campaign => {
     const matchesSearch = campaign.campaignName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (campaign.description || '').toLowerCase().includes(searchTerm.toLowerCase());
-    
+      (campaign.description || '').toLowerCase().includes(searchTerm.toLowerCase());
+
     if (filterStatus === "all") return matchesSearch;
     if (filterStatus === "active") return matchesSearch && (campaign.totalSent || 0) > 0;
     if (filterStatus === "pending") return matchesSearch && (campaign.totalSent || 0) === 0;
-    
+
     return matchesSearch;
   });
 
@@ -183,18 +183,18 @@ export default function CampaignPage() {
             <BarChart3 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 mb-2 tracking-tight">No Campaigns Available</h3>
             <p className="text-gray-600 font-medium">
-              {searchTerm || filterStatus !== "all" 
-                ? "Please refine your search criteria or filter options" 
+              {searchTerm || filterStatus !== "all"
+                ? "Please refine your search criteria or filter options"
                 : "Launch your first marketing campaign to begin tracking performance"}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredCampaigns.map((campaign) => {
-              const successRate = campaign.totalSent > 0 
+              const successRate = campaign.totalSent > 0
                 ? ((campaign.totalSent - campaign.totalFailed) / campaign.totalSent * 100).toFixed(1)
                 : 0;
-              
+
               return (
                 <div key={campaign._id} className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
                   <div className="p-6">
@@ -202,11 +202,10 @@ export default function CampaignPage() {
                       <h3 className="text-xl font-bold text-gray-900 truncate pr-2 tracking-tight">
                         {campaign.campaignName}
                       </h3>
-                      <span className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
-                        campaign.totalSent > 0 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
+                      <span className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${campaign.totalSent > 0
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                        }`}>
                         {campaign.totalSent > 0 ? 'Live' : 'Draft'}
                       </span>
                     </div>
@@ -247,19 +246,17 @@ export default function CampaignPage() {
                       <div className="pt-2 border-t border-gray-100">
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-500 font-medium">Delivery Rate</span>
-                          <span className={`font-bold ${
-                            successRate >= 90 ? 'text-green-600' : 
+                          <span className={`font-bold ${successRate >= 90 ? 'text-green-600' :
                             successRate >= 70 ? 'text-yellow-600' : 'text-red-600'
-                          }`}>
+                            }`}>
                             {successRate}%
                           </span>
                         </div>
                         <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                          <div 
-                            className={`h-2 rounded-full ${
-                              successRate >= 90 ? 'bg-green-500' : 
+                          <div
+                            className={`h-2 rounded-full ${successRate >= 90 ? 'bg-green-500' :
                               successRate >= 70 ? 'bg-yellow-500' : 'bg-red-500'
-                            }`}
+                              }`}
                             style={{ width: `${successRate}%` }}
                           ></div>
                         </div>

@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import {Users, TrendingUp, ShoppingBag,  ChevronLeft, ChevronRight } from 'lucide-react';
+import { Users, TrendingUp, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import ViewProfile from '../components/viewProfile';
 
 function Pagination({ currentPage, totalPages, onPageChange }) {
   const pageNumbers = [];
   const maxVisiblePages = 5;
-  
+
   let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
   let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-  
+
   if (endPage - startPage + 1 < maxVisiblePages) {
     startPage = Math.max(1, endPage - maxVisiblePages + 1);
   }
@@ -30,21 +30,20 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          
+
           {pageNumbers.map(number => (
             <button
               key={number}
               onClick={() => onPageChange(number)}
-              className={`px-3 py-1 text-sm rounded ${
-                currentPage === number
+              className={`px-3 py-1 text-sm rounded ${currentPage === number
                   ? 'bg-blue-600 text-white'
                   : 'text-gray-700 hover:bg-gray-100'
-              }`}
+                }`}
             >
               {number}
             </button>
           ))}
-          
+
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -139,7 +138,7 @@ export default function CustomerPage() {
   const formatCurrency = (amount) =>
     amount?.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) || '$0.00';
 
-  const filteredCustomers = customers.filter(customer => 
+  const filteredCustomers = customers.filter(customer =>
     `${customer.firstName} ${customer.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
     customer.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -322,7 +321,7 @@ export default function CustomerPage() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4 mb-3 text-sm">
                       <div>
                         <span className="text-gray-500">Total Spent:</span>
@@ -374,9 +373,9 @@ export default function CustomerPage() {
 
       {/* View Profile Modal */}
       {selectedCustomer && (
-        <ViewProfile 
-          customer={selectedCustomer} 
-          onClose={() => setSelectedCustomer(null)} 
+        <ViewProfile
+          customer={selectedCustomer}
+          onClose={() => setSelectedCustomer(null)}
         />
       )}
     </div>

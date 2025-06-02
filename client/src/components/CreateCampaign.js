@@ -11,11 +11,11 @@ export default function CreateCampaign() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [customerRangeFilter, setCustomerRangeFilter] = useState('all');
-  
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const segmentsPerPage = 6;
-  
+
   // Animation states
   const [notification, setNotification] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -91,7 +91,7 @@ export default function CreateCampaign() {
     }
 
     setIsCreating(true);
-    
+
     try {
       console.log("Creating campaign with segments:", selectedSegmentIds);
       const response = await fetch(`${process.env.REACT_APP_BASE_URL}/campaign/create`, {
@@ -149,14 +149,12 @@ export default function CreateCampaign() {
     if (!notification) return null;
 
     return (
-      <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-6 py-4 rounded-lg shadow-lg border transform transition-all duration-500 ease-in-out ${
-        notification.type === 'success' 
-          ? 'bg-green-50 border-green-200 text-green-800' 
+      <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-6 py-4 rounded-lg shadow-lg border transform transition-all duration-500 ease-in-out ${notification.type === 'success'
+          ? 'bg-green-50 border-green-200 text-green-800'
           : 'bg-red-50 border-red-200 text-red-800'
-      } animate-slide-in`}>
-        <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
-          notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-        } animate-bounce-in`}>
+        } animate-slide-in`}>
+        <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+          } animate-bounce-in`}>
           {notification.type === 'success' ? (
             <Check className="w-4 h-4 text-white animate-check" />
           ) : (
@@ -207,9 +205,9 @@ export default function CreateCampaign() {
           animation: checkmark 0.6s ease-out 0.4s both;
         }
       `}</style>
-      
+
       <NotificationComponent />
-      
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -226,7 +224,7 @@ export default function CreateCampaign() {
                 <MessageSquare className="w-5 h-5 text-blue-600" />
                 <h2 className="text-xl font-semibold text-gray-900">Campaign Details</h2>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -292,9 +290,8 @@ export default function CreateCampaign() {
                   </div>
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className={`flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors ${
-                      showFilters ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                    }`}
+                    className={`flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors ${showFilters ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                      }`}
                   >
                     <Filter className="w-4 h-4" />
                     Filter
@@ -327,17 +324,15 @@ export default function CreateCampaign() {
                   <div
                     key={segment._id}
                     onClick={() => toggleSegmentSelection(segment._id)}
-                    className={`cursor-pointer border rounded-xl p-4 transition-all duration-200 hover:shadow-md ${
-                      selectedSegmentIds.includes(segment._id) 
-                        ? 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200' 
+                    className={`cursor-pointer border rounded-xl p-4 transition-all duration-200 hover:shadow-md ${selectedSegmentIds.includes(segment._id)
+                        ? 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200'
                         : 'border-gray-200 bg-white hover:border-blue-300'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-semibold text-gray-900 text-sm leading-tight">{segment.name}</h3>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-                        selectedSegmentIds.includes(segment._id) ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
-                      }`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${selectedSegmentIds.includes(segment._id) ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                        }`}>
                         {selectedSegmentIds.includes(segment._id) && (
                           <div className="w-2 h-2 bg-white rounded-full"></div>
                         )}
@@ -364,7 +359,7 @@ export default function CreateCampaign() {
                   <div className="text-sm text-gray-600">
                     Showing {startIndex + 1}-{Math.min(endIndex, filteredSegments.length)} of {filteredSegments.length} segments
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <button
                       onClick={goToPrevPage}
@@ -373,23 +368,22 @@ export default function CreateCampaign() {
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    
+
                     <div className="flex items-center gap-1">
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                         <button
                           key={page}
                           onClick={() => goToPage(page)}
-                          className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
-                            currentPage === page
+                          className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${currentPage === page
                               ? 'bg-blue-600 text-white'
                               : 'text-gray-600 hover:bg-gray-100'
-                          }`}
+                            }`}
                         >
                           {page}
                         </button>
                       ))}
                     </div>
-                    
+
                     <button
                       onClick={goToNextPage}
                       disabled={currentPage === totalPages}
@@ -422,11 +416,10 @@ export default function CreateCampaign() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Status</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    campaignName && message && selectedSegmentIds.length > 0 
-                      ? 'bg-green-100 text-green-800' 
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${campaignName && message && selectedSegmentIds.length > 0
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
-                  }`}>
+                    }`}>
                     {campaignName && message && selectedSegmentIds.length > 0 ? 'Ready to Launch' : 'Incomplete'}
                   </span>
                 </div>
