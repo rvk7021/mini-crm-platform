@@ -141,3 +141,21 @@ export const GoogleOAuth = async (req, res) => {
     }
 }
 
+// check if user is authenticated
+export const isAuthenticated = (req, res, next) => {
+    const userId = req.user?._id;
+    console.log("User ID:", userId);
+
+    if (!userId) {
+        return res.status(401).json({ 
+            success: false,
+             message: 'Unauthorized' 
+            });
+    }
+    else {
+        return res.status(200).json({
+            success: true,
+            message: 'User is authenticated',
+        });
+    }
+}
