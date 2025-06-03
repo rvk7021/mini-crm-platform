@@ -1,70 +1,171 @@
-# Getting Started with Create React App
+# 📊 Mini-CRM Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive, full-stack CRM application built with **React**, **Node.js**, and **MongoDB**, integrating **Gemini AI** for intelligent query generation, description enrichment, and smart prompt-based data filtering. Campaigns are handled efficiently using **Bull Queue**, and the platform features secure **JWT authentication**, modular component-based frontend, and robust backend architecture.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- 🔒 **JWT Authentication**: Secure login and route protection.
+- 🧠 **AI Integration with Gemini**:
+  - Generates **DB queries** and **descriptions** if not present.
+  - Supports **prompt segmentation** to filter CRM data dynamically.
+- 📋 **Campaign Queueing with Bull**:
+  - Send responses in **bulk** using job queues.
+  - Optimized delivery instead of one-by-one sending.
+- 💻 **Responsive UI** built with React and TailwindCSS.
+- 🧩 Modular frontend with reusable components.
+- ⚙️ Robust backend with Express and MongoDB.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧱 Tech Stack
 
-### `npm test`
+| Frontend          | Backend       | AI Integration | Database | Queue        | Authentication       | Styling         |
+|-------------------|---------------|----------------|----------|--------------|----------------------|-----------------|
+| React.js          | Node.js       | Gemini API     | MongoDB  | Bull (Redis) | JWT (JSON Web Token)  | Tailwind CSS    |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Live Demo
 
-### `npm run build`
+You can check out the live hosted version of the Mini-CRM Platform here:  
+👉 [https://smartreach.netlify.app/](https://smartreach.netlify.app/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🎥 Demo Video
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Watch the demo of the Mini-CRM Platform here:  
+▶️ [Mini-CRM Platform Demo Video](https://youtu.be/vqSV_3GXouE)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## 🛠️ Tech Stack & Achievements
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Frontend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **React.js**  
+  We used React.js to build a highly interactive and dynamic user interface with reusable components. This helped us create a **modular and maintainable frontend** that efficiently renders UI updates, providing a smooth user experience.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Tailwind CSS**  
+  Tailwind CSS was chosen for rapid UI development using utility classes. This enabled us to **build a fully responsive and visually consistent design** quickly without writing bulky CSS, improving development speed and reducing style conflicts.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Backend
 
-## Learn More
+- **Node.js + Express.js**  
+  Our backend uses Node.js with Express to build scalable RESTful APIs. This choice allowed us to handle **high concurrency with a non-blocking event-driven architecture**, ensuring fast and reliable server-side performance.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **MongoDB**  
+  MongoDB was implemented as our database to store CRM data in flexible, JSON-like documents. This schema-less approach enabled us to **adapt quickly to evolving data requirements** and support complex customer and campaign data efficiently.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Authentication
 
-### Code Splitting
+- **JWT (JSON Web Tokens)**  
+  JWT-based authentication was used to secure API endpoints. This approach helped us build a **stateless, scalable, and secure authentication system**, allowing users to safely log in and access protected resources without server-side session overhead.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Google OAuth2**  
+  Integrating Google OAuth2 provided users with an easy and trusted way to sign in, eliminating password fatigue and enhancing security. This improved the **user onboarding experience** by supporting both social login and traditional authentication.
 
-### Analyzing the Bundle Size
+### AI Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Gemini AI**  
+  Gemini AI was integrated into the backend to handle advanced tasks like generating database queries from natural language prompts, auto-creating missing descriptions, and performing prompt segmentation for smart filtering. This integration allowed us to **automate complex data filtering and enrich CRM data dynamically**, greatly improving efficiency and user productivity.
 
-### Making a Progressive Web App
+### Queuing & Background Jobs
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Bull Queue (with Redis)**  
+  We used Bull Queue backed by Redis to manage campaign message sending asynchronously. This enabled us to **queue and batch process campaign dispatches efficiently**, avoiding server overload and ensuring reliable delivery with retry capabilities.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+By combining these technologies, the Mini-CRM Platform achieves a **robust, scalable, and user-friendly CRM solution** with powerful AI capabilities, seamless authentication, responsive UI, and efficient background processing.
 
-### Deployment
+---
+### Project Structure
+```
+mini-crm-platform/
+├── client/
+│   ├── public/
+│   └── src/
+│       ├── Forms/
+│       ├── auth/
+│       ├── components/
+│       ├── pages/
+│       ├── App.js
+│       ├── index.js
+│       └── index.css
+├── server/
+│   └── src/
+│       ├── controllers/
+│       ├── middleware/
+│       ├── models/
+│       ├── routes/
+│       ├── utils/
+│       ├── worker/
+│       └── messageQueue.js
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📐 Architecture Overview
 
-### `npm run build` fails to minify
+### System Architecture
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```plaintext
+                                                  ┌────────────────────────────┐
+                                                 │        USER (Browser)      │
+                                                 └────────────┬───────────────┘
+                                                              │
+                                     ┌────────────────────────┼────────────────────────┐
+                                     │                        ▼                        │
+                             ┌─────────────────────────────────────────┐               │
+                             │        FRONTEND (React + Tailwind)      │               │
+                             │ - Login (Google OAuth2 / DB Login)      │               │
+                             │ - Customers / Orders Page               │               │
+                             │ - Segments Page                         │               │
+                             │ - Campaigns & Logs Page                 │               │
+                             └────────────────┬────────────────────────┘               │
+                                              │  Authenticated API Requests (JWT)       │
+                                              ▼                                         ▼
+     ┌──────────────────────────────────────────────────────── Backend (Node.js + Express) ─────────────────────────────────────────────────┐
+     │                                                                                                                                       │
+     │  ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ │
+     │  │ ⚙️  AUTH MODULE                                                                                                                 │ │
+     │  │ - Google OAuth2 login (via Passport.js)                                                                                         │ │
+     │  │ - DB login with hashed password (bcrypt)                                                                                        │ │
+     │  │ - Generates and returns JWT → stored in localStorage/cookies                                                                    │ │
+     │  └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘ │
+     │                                                                                                                                       │
+     │  ┌────────────────────────────────────┐      ┌────────────────────────────────────────────────────────────────────────────────────┐ │
+     │  │ 🔁 CUSTOMER API                    │      │ ✏️ ADD CUSTOMER / ADD ORDER API                                                   │ │
+     │  │ - GET /customers                   │◄────►│ - POST /customers/add                                                             │ │
+     │  │ - GET /orders?customerId=xyz       │      │ - POST /orders/add (link to customer)                                            │ │
+     │  └────────────────────────────────────┘      └────────────────────────────────────────────────────────────────────────────────────┘ │
+     │                          ▲                                                                                                            │
+     │                          │                                                                                                            │
+     │                          │                                                                                                            │
+     │                    ┌─────┴───────┐                                                                                                   │
+     │                    │ 📦 MONGODB  │ ← Stores customers, orders, segments, campaigns, logs                                             │
+     │                    └─────────────┘                                                                                                   │
+     │                                                                                                                                       │
+     │  ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ │
+     │  │ 🧠 SEGMENT SERVICE                                                                                                               │ │
+     │  │ - GET /segments                         → Fetch all segments                                                                     │ │
+     │  │ - POST /segments/create                 → Create segment via:                                                                    │ │
+     │  │     ├── Manual filters (field + value)                                                                                           │ │
+     │  │     └── Gemini AI (prompt-based filtering)                                                                                       │ │
+     │  │         ┌─────────────► Gemini API → Prompt Segmentation                                                                         │ │
+     │  │         │                                                                                                                        │ │
+     │  │         └── Returns filtered customers list                                                                                      │ │
+     │  │ - If description missing: calls Gemini to auto-generate a short description                                                      │ │
+     │  └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘ │
+     │                                                                                                                                       │
+     │  ┌────────────────────────────────────────────────────────────────────────────┐   ┌───────────────────────────────────────────────┐  │
+     │  │ 📢 CAMPAIGN SERVICE                                                         │   │ 📥 BULL QUEUE (Redis)                        │  │
+     │  │ - Select multiple segments                                                  │   │ - POST /campaigns/send                       │  │
+     │  │ - Add to Bull queue                                                         ├──►│ - Add jobs (send email to filtered users)    │  │
+     │  │ - Worker consumes and sends campaigns in bulk                               │   │ - Background worker handles execution       │  │
+     │  └────────────────────────────────────────────────────────────────────────────┘   └───────────────────────────────────────────────┘  │
+     │                                                                                                                                       │
+     │  ┌─────────────────────────────────────────────────────┐   ┌─────────────────────────────────────────────────────┐                  │
+     │  │ 🧾 COMMUNICATION LOGS                               │   │ 🗃️  CAMPAIGN LOGS                                   │                  │
+     │  │ - Message sent log per campaign/customer            │   │ - Metadata: when, how many sent, success/failure   │                  │
+     │  │ - Stored in MongoDB                                 │   │ - Accessed from frontend log page                 │                  │
+     │  └─────────────────────────────────────────────────────┘   └─────────────────────────────────────────────────────┘                  │
+     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
